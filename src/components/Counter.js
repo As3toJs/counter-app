@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 
 class Counter extends Component {
     state = {
-        count: 0
+        itemId: this.props.item.itemId,
+        count: this.props.item.count
     }
 
     render() {
@@ -15,20 +16,18 @@ class Counter extends Component {
         );
     }
 
-    /*renderTags() {
-        if (this.state.count === 0) return <p>There is no tags</p>
-        return (this.state.tags.map(tag => {
-            return (<li key={tag}>{tag}</li>)
-        }
-        ))
-    }*/
-
     handleIncrement = () => {
-        this.setState({ count: this.state.count + 1 });
+        const count = this.state.count + 1;
+        this.setState({ count });
+        this.props.counter({ itemId: this.state.itemId, count });
     }
+
     handleDecrement = () => {
-        if (this.state.count > 0)
-            this.setState({ count: this.state.count - 1 });
+        if (this.state.count > 0) {
+            const count = this.state.count - 1;
+            this.setState({ count });
+            this.props.counter({ itemId: this.state.itemId, count });
+        }
     }
 
     getBadgeClasses() {
