@@ -1,45 +1,37 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class Counter extends Component {
-    state = {
-        itemId: this.props.item.itemId,
-        count: this.props.item.count
-    }
+const Counter = ({ item, onIncrement, onDecrement, onDelete }) => {
 
-    render() {
-        return (
-            <div style={{ padding: '0.5em' }}>
-                <span style={{ width: 50 }} className={this.getBadgeClasses()}>{this.formatCount()}</span>
-                <button onClick={this.handleIncrement} className="btn btn-secondary btn-sm m-2">+</button>
-                <button onClick={this.handleDecrement} className="btn btn-secondary btn-sm">-</button>
-            </div >
-        );
-    }
-
-    handleIncrement = () => {
-        const count = this.state.count + 1;
-        this.setState({ count });
-        this.props.counter({ itemId: this.state.itemId, count });
-    }
-
-    handleDecrement = () => {
-        if (this.state.count > 0) {
-            const count = this.state.count - 1;
-            this.setState({ count });
-            this.props.counter({ itemId: this.state.itemId, count });
-        }
-    }
-
-    getBadgeClasses() {
+    const getBadgeClasses = () => {
         let classes = "badge m-2 badge-";
-        classes += this.state.count === 0 ? 'warning' : 'primary';
-        return classes;
+        return classes += item.count === 0 ? 'warning' : 'primary';
     }
 
-    formatCount() {
-        const { count } = this.state;
-        return count === 0 ? "Zero" : count;
+    const formatCount = () => {
+        return item.count === 0 ? "Zero" : item.count;
     }
+
+    return (
+        <div style={{ padding: '0.5em' }}>
+            <span
+                style={{ width: 50 }} className={getBadgeClasses()}>{formatCount()}</span>
+            <button
+                onClick={() => onIncrement(item)}
+                className="btn btn-secondary btn-sm m-2">
+                +
+                </button>
+            <button disabled={item.count <= 0}
+                onClick={() => onDecrement(item)}
+                className="btn btn-secondary btn-sm m-2">
+                -
+                </button>
+            <button
+                onClick={() => onDelete(item)}
+                className="btn btn-danger btn-sm">
+                Delete
+                </button>
+        </div >
+    );
 }
 
 export default Counter;
